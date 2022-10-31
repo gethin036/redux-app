@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector ,useDispatch } from 'react-redux'
+import { Button, Select, Input } from 'antd';
 import { postAdded  } from './postsSlice'
 import { useTranslation } from 'react-i18next'
 import { getUsers } from '../users/userSlice'
@@ -25,16 +26,16 @@ export default function AddPostFrom () {
       setContent('')
     }
   }
-
+  const { Option } = Select
   const languageList = ['zh', 'en']
   const languageOption = languageList.map(language => (
-    <option key={language} value={language}>{language}</option>  
+    <Option key={language} value={language}>{language}</Option>  
   ))
 
-  const onLanguageChange = (e) => {
-    setLang(e.target.value)
+  const onLanguageChange = (value) => {
+    setLang(value)
     console.log(i18n.t('addNewPost'))
-    i18n.changeLanguage(e.target.value)
+    i18n.changeLanguage(value)
   }
 
   const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
@@ -47,13 +48,23 @@ export default function AddPostFrom () {
     <section>
       <h2>{t('addNewPost')}</h2>
       {/* <button></button> */}
-      <select value={lang} onChange={onLanguageChange}>
-        <option value=""></option>
+      <Select value={lang} onChange={onLanguageChange} style={{
+          width: 200,
+        }}>
+        <Option value=""></Option>
         { languageOption }
-      </select>
+      </Select>
       <form>
         <label htmlFor="postTitle">Post Title: </label>
-        <input 
+        {/* <input 
+          type="text"
+          id="postTitle"
+          name="postTitle"
+          placeholder="What's you mind"
+          value={title}
+          onChange={onTitleChange}
+        /> */}
+        <Input 
           type="text"
           id="postTitle"
           name="postTitle"
@@ -67,14 +78,23 @@ export default function AddPostFrom () {
           { usersOptions }
         </select>
         <label htmlFor="postContent">Content: </label>
-        <textarea 
+        {/* <textarea 
+          name="postContent" 
+          id="postContent"
+          placeholder="Please input"
+          value={content}
+          onChange={onContentChange} 
+        /> */}
+        <Input.TextArea
           name="postContent" 
           id="postContent"
           placeholder="Please input"
           value={content}
           onChange={onContentChange} 
         />
-        <button type="button" onClick={savePost} disabled={!canSave}>Save Post</button>
+        {/* <button type="button" onClick={savePost} disabled={!canSave}>Save Post</button> */}
+        <Button type="primary" onClick={savePost} disabled={!canSave}>Save Post</Button>
+        {/* <Button type="text">Text Button</Button> */}
       </form>
     </section>
   )
